@@ -28,15 +28,19 @@ Route::middleware('inertia')->group(function () {
         return Inertia::render('Schedule');
     })->name('schedule');
 
-    Route::get('/schedule/add', function () {
+    Route::get('/schedule/add', static function () {
         return Inertia::render('AddSchedule');
     })->name('schedule.add');
 
-    Route::get('/schedule/delete', function () {
+    Route::get('/schedule/delete', static function () {
         return Inertia::render('Schedule');
     })->name('schedule.delete');
 
-    Route::get('/user/{id}', function ($id) {
+    Route::get('/type', static function () {
+        return Inertia::render('Type');
+    })->name('type');
+
+    Route::get('/user/{id}', static function ($id) {
         return Inertia::render('User', ['user_id' => $id]);
     });
 });

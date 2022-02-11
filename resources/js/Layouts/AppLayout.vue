@@ -25,6 +25,9 @@
                                 <jet-nav-link :href="route('schedule')" :active="route().current('schedule')">
                                     Расписание
                                 </jet-nav-link>
+                                <jet-nav-link :href="route('type')" :active="route().current('type')">
+                                    Типы пар
+                                </jet-nav-link>
                             </div>
                         </div>
 
@@ -95,6 +98,9 @@
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('schedule')" :active="route().current('schedule')">
                             Расписание
+                        </jet-responsive-nav-link>
+                        <jet-responsive-nav-link :href="route('type')" :active="route().current('type')">
+                            Типы пар
                         </jet-responsive-nav-link>
                     </div>
 

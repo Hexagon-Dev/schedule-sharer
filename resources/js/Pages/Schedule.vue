@@ -40,7 +40,7 @@
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                         <transition-group name="fade-out-in">
-                                        <tr v-for="schedule in data" :key="schedule['id']" v-if="!loadingData">
+                                        <tr v-for="schedule in data" :key="schedule['id']" v-if="!loadingData" v-bind:class="{'bg-indigo-100' : isNow[schedule['id']]}">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 {{ schedule['lesson'] }}
                                             </td>
@@ -100,7 +100,8 @@ export default defineComponent({
         return {
             data: {},
             loadingData: true,
-            day: "today"
+            day: "today",
+            isNow: {},
         }
     },
     created() {
@@ -124,10 +125,33 @@ export default defineComponent({
             axios
                 .get(`/api/schedule/` + weekday)
                 .then((res) => {
-                    if (this.debug) console.log(res.data);
+                    //console.log(res.data);
                     this.data = res.data;
                     this.loadingData = false;
+
+                    let today = new Date();
+                    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+                    let active = {};
+
+                    Object.keys(res.data).forEach(function(key) {
+
+                        //console.log(res.data[key]['start_time']);
+
+                        //console.log(key);
+
+                        if (res.data[key]['start_time'] <= time && res.data[key]['end_time'] >= time) {
+                            active[++key] = true;
+                        }
+
+                    });
+
+                    console.log(active);
+
+                    this.isNow = active;
                 });
+
+
         },
 
     }
