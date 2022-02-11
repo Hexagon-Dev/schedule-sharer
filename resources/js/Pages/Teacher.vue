@@ -9,24 +9,8 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-                <jet-form-section @submitted="createTeacher">
-                    <template #form>
-                        <div class="col-span-6 sm:col-span-4">
-                            <jet-label for="name" value="Название типа пары" />
-                            <jet-input id="name" type="text" class="block w-full" v-model="form.name" ref="name" required />
-                        </div>
-                    </template>
-
-                    <template #actions>
-                        <jet-action-message :on="form.recentlySuccessful" class="mr-3">
-                            Добавлено.
-                        </jet-action-message>
-
-                        <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                            Добавить
-                        </jet-button>
-                    </template>
-                </jet-form-section>
+                <Link :href="route('teacher.add')" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-4">Добавить</Link>
+                <Link :href="route('teacher.add')" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Удалить</Link>
 
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg mt-4">
                     <div class="flex flex-col">
@@ -49,6 +33,9 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     {{ teacher['name'] }}
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    {{ teacher['email'] }}
                                                 </td>
                                             </tr>
                                             <tr v-if="loadingData">
@@ -107,7 +94,7 @@ export default defineComponent({
     methods: {
         getTeachers() {
             axios
-                .get(`/api/type`)
+                .get(route('api.user.group', 'teacher'))
                 .then((res) => {
                     if (this.debug) console.log(res.data);
                     this.data = res.data;

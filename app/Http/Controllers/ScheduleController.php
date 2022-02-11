@@ -19,9 +19,10 @@ class ScheduleController extends Controller
         $schedules = Schedule::query()->where('day', $day)->where('group_id', $user->group_id)->get()->toArray();
 
         foreach ($schedules as $key => $value) {
-            $schedules[$key]['lesson'] = Lesson::query()->find($value['lesson_id'])->first()['name'];
+            $lesson = Lesson::query()->find($value['lesson_id'])->first();
+            $schedules[$key]['lesson'] = $lesson['name'];
             $schedules[$key]['type'] = Type::query()->find($value['type_id'])->first()['name'];
-            $schedules[$key]['teacher'] = User::query()->find($value['teacher_id'])->first()['name'];
+            $schedules[$key]['teacher'] = User::query()->find($lesson['teacher_id'])->first()['name'];
         }
 
         return response()->json($schedules);

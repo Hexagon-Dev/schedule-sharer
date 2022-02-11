@@ -20,7 +20,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::middleware('inertia')->group(function () {
     Route::prefix('api')->group(function () {
-        Route::get('/schedule/{day}', [ScheduleController::class, 'get']);
+        Route::get('/schedule/{day}', [ScheduleController::class, 'get'])->name('api.schedule.get.day');
         Route::put('/schedule', [ScheduleController::class, 'add'])->name('api.schedule.add');
     });
 
@@ -39,6 +39,18 @@ Route::middleware('inertia')->group(function () {
     Route::get('/type', static function () {
         return Inertia::render('Type');
     })->name('type');
+
+    Route::get('/teacher', static function () {
+        return Inertia::render('Teacher');
+    })->name('teacher');
+
+    Route::get('/teacher/add', static function () {
+        return Inertia::render('Teacher');
+    })->name('teacher.add');
+
+    Route::get('/teacher/delete', static function () {
+        return Inertia::render('Teacher');
+    })->name('teacher.delete');
 
     Route::get('/user/{id}', static function ($id) {
         return Inertia::render('User', ['user_id' => $id]);

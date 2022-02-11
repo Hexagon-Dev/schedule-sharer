@@ -27,7 +27,7 @@ Route::get('/user/{id}', [UserController::class, 'getOne']);
 
 Route::get('/lesson', [LessonController::class, 'getAll'])->name('api.lesson.all');
 
-Route::get('/user/group/{role}', [UserController::class, 'getRole'])->name('api.user.group.all');
+Route::get('/user/group/{role}', [UserController::class, 'getRole'])->name('api.user.group');
 
 Route::get('/type', [TypeController::class, 'getAll'])->name('api.type.all');
 Route::put('/type', [TypeController::class, 'create'])->name('api.type.create');

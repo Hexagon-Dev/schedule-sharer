@@ -123,7 +123,7 @@ export default defineComponent({
             }
 
             axios
-                .get(`/api/schedule/` + weekday)
+                .get(route('api.schedule.get.day', weekday))
                 .then((res) => {
                     //console.log(res.data);
                     this.data = res.data;
@@ -135,23 +135,13 @@ export default defineComponent({
                     let active = {};
 
                     Object.keys(res.data).forEach(function(key) {
-
-                        //console.log(res.data[key]['start_time']);
-
-                        //console.log(key);
-
                         if (res.data[key]['start_time'] <= time && res.data[key]['end_time'] >= time) {
-                            active[++key] = true;
+                            active[res.data[key]['id']] = true;
                         }
 
                     });
-
-                    console.log(active);
-
                     this.isNow = active;
                 });
-
-
         },
 
     }

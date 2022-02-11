@@ -178,7 +178,7 @@
             },
             getTeachersList() {
                 axios
-                    .get(route('api.user.group.all', 'teacher'))
+                    .get(route('api.user.group', 'teacher'))
                     .then((res) => {
                         console.log(res.data);
                         this.teachersData = res.data;

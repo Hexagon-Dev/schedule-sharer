@@ -28,6 +28,9 @@
                                 <jet-nav-link :href="route('type')" :active="route().current('type')">
                                     Типы пар
                                 </jet-nav-link>
+                                <jet-nav-link :href="route('teacher')" :active="route().current('teacher')">
+                                    Преподаватели
+                                </jet-nav-link>
                             </div>
                         </div>
 
@@ -101,6 +104,9 @@
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('type')" :active="route().current('type')">
                             Типы пар
+                        </jet-responsive-nav-link>
+                        <jet-responsive-nav-link :href="route('teacher')" :active="route().current('teacher')">
+                            Преподаватели
                         </jet-responsive-nav-link>
                     </div>
 
