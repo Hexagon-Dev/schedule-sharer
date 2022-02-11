@@ -5,7 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
+Route::get('/', static function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -23,7 +23,7 @@ Route::middleware('inertia')->group(function () {
         Route::get('/schedule/{day}', [ScheduleController::class, 'get']);
     });
 
-    Route::get('/schedule', function () {
+    Route::get('/schedule', static function () {
         return Inertia::render('Schedule');
     })->name('schedule');
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateScheduleRequest;
 use App\Models\Lesson;
 use App\Models\Schedule;
 use App\Models\Type;
@@ -24,5 +25,16 @@ class ScheduleController extends Controller
         }
 
         return response()->json($schedules);
+    }
+
+    public function add(CreateScheduleRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        Schedule::query()->create($data);
+
+        return response()->json([
+            'message' => 'schedule_created'
+        ]);
     }
 }

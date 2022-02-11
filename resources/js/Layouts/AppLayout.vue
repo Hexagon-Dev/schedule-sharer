@@ -134,14 +134,19 @@
             <!-- Page Heading -->
             <header class="bg-white shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header"></slot>
+                    <transition name="fade" mode="out-in">
+                        <slot name="header"></slot>
+                    </transition>
                 </div>
             </header>
 
             <!-- Page Content -->
             <main>
-                <slot></slot>
+                <Transition name="fade" mode="out-in">
+                    <slot></slot>
+                </Transition>
             </main>
+
         </div>
     </div>
 </template>
@@ -193,3 +198,15 @@
         }
     })
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

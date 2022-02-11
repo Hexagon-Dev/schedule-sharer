@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\LessonController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -21,3 +23,8 @@ Route::post('/university', [UniversityController::class, 'create']);
 Route::delete('/university', [UniversityController::class, 'delete']);
 
 Route::get('/user/{id}', [UserController::class, 'getOne']);
+Route::post('/schedule/add', [ScheduleController::class, 'add']);
+
+Route::get('/lesson', [LessonController::class, 'getAll'])->name('api.lesson.all');
+
+Route::get('/user/group/{id}', [UserController::class, 'getGroup'])->name('api.user.group.all');
