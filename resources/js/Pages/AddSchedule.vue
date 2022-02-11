@@ -20,45 +20,78 @@
 
                         <template #form>
                             <div class="col-span-6 sm:col-span-4">
-                                <jet-label for="lesson" value="Предмет" />
-                                <select name="lesson" id="lesson" v-model="form.lesson" ref="lesson" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block w-full">
+                                <jet-label for="lesson_id" value="Предмет" />
+                                <select name="lesson_id" id="lesson_id" v-model="form.lesson_id" ref="lesson_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block w-full" required>
                                     <option v-for="option in lessonsData" v-bind:value="option.id">
                                         {{ option.name }}
                                     </option>
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-4">
-                                <jet-label for="teacher" value="Преподаватель" />
-                                <select name="teacher" id="teacher" v-model="form.teacher" ref="teacher" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block w-full">
+                                <jet-label for="teacher_id" value="Преподаватель" />
+                                <select name="teacher_id" id="teacher_id" v-model="form.teacher_id" ref="teacher_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block w-full" required>
                                     <option v-for="option in teachersData" v-bind:value="option.id">
                                         {{ option.name }}
                                     </option>
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-4">
+                                <jet-label for="type_id" value="Тип" />
+                                <select name="type_id" id="type_id" v-model="form.type_id" ref="type_id" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block w-full" required>
+                                    <option v-for="option in typesData" v-bind:value="option.id">
+                                        {{ option.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-4">
+                                <jet-label for="day" value="День недели" />
+                                <select name="day" id="day" v-model="form.day" ref="day" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block w-full" required>
+                                    <option value="1">Понедельник</option>
+                                    <option value="2">Вторник</option>
+                                    <option value="3">Среда</option>
+                                    <option value="4">Четверг</option>
+                                    <option value="5">Пятница</option>
+                                    <option value="6">Суббота</option>
+                                    <option value="7">Воскресенье</option>
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-4">
+                                <jet-label for="week_num" value="Порядок пар" />
+                                <select autocomplete="off" name="week_num" id="week_num" v-model="form.week_num" ref="week_num" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm block w-full" required>
+                                    <option value="0" selected>Еженедельно</option>
+                                    <option value="1">Числитель</option>
+                                    <option value="2">Знаменатель</option>
+                                </select>
+                            </div>
+                            <div class="col-span-6 sm:col-span-4">
                                 <jet-label for="classroom" value="Аудитория" />
-                                <jet-input id="classroom" type="text" class="block w-full" v-model="form.classroom" ref="classroom" />
+                                <jet-input id="classroom" type="text" class="block w-full" v-model="form.classroom" ref="classroom" required />
                                 <jet-input-error :message="form.error" class="mt-2" />
                             </div>
                             <div class="col-span-6 sm:col-span-4">
                                 <jet-label for="building" value="Корпус" />
-                                <jet-input id="building" type="text" class="block w-full" v-model="form.building" ref="building" />
-                                <jet-input-error :message="form.error" class="mt-2" />
-                            </div>
-                            <div class="col-span-6 sm:col-span-4">
-                                <jet-label for="type" value="Тип" />
-                                <jet-input id="type" type="text" class="block w-full" v-model="form.type" ref="type" />
+                                <jet-input id="building" type="text" class="block w-full" v-model="form.building" ref="building" required />
                                 <jet-input-error :message="form.error" class="mt-2" />
                             </div>
                             <div class="col-span-6 sm:col-span-4">
                                 <jet-label for="start_time" value="Начало" />
-                                <jet-input id="start_time" type="time" class="block w-full" v-model="form.start_time" ref="start_time" />
-                                <jet-input-error :message="form.error" class="mt-2" />
+                                <jet-input id="start_time" type="text" class="block w-full" v-model="form.start_time" ref="start_time" list="time-list1" required />
+                                <datalist id="time-list1">
+                                    <option value="08:00" />
+                                    <option value="09:35" />
+                                    <option value="11:25" />
+                                    <option value="12:55" />
+                                </datalist>
                             </div>
                             <div class="col-span-6 sm:col-span-4">
                                 <jet-label for="end_time" value="Конец" />
-                                <jet-input id="end_time" type="time" class="block w-full" v-model="form.end_time" ref="end_time" />
-                                <jet-input-error :message="form.error" class="mt-2" />
+                                <jet-input id="end_time" type="text" class="block w-full" v-model="form.end_time" ref="end_time" list="time-list2" required />
+                                <datalist id="time-list2">
+                                    <option value="09:20" />
+                                    <option value="10:55" />
+                                    <option value="12:45" />
+                                    <option value="14:15" />
+                                </datalist>
                             </div>
                         </template>
 
@@ -104,37 +137,34 @@
         data() {
             return {
                 form: this.$inertia.form({
-                    lesson: '',
-                    teacher: '',
+                    lesson_id: '',
+                    teacher_id: '',
                     classroom: '',
                     building: '',
-                    type: '',
+                    type_id: '',
                     start_time: '',
                     end_time: '',
+                    day: '',
+                    week_num: '',
                 }),
                 lessonsData: {},
                 teachersData: {},
+                typesData: {},
             }
         },
         created() {
             this.getLessonsList();
+            this.getTeachersList();
+            this.getTypesList();
         },
         methods: {
             createSchedule() {
-                this.form.put(route(''), {
-                    errorBag: 'updatePassword',
+                this.form.put(route('api.schedule.add'), {
+                    errorBag: 'createSchedule',
                     preserveScroll: true,
                     onSuccess: () => this.form.reset(),
                     onError: () => {
-                        if (this.form.errors.password) {
-                            this.form.reset('password', 'password_confirmation')
-                            this.$refs.password.focus()
-                        }
-
-                        if (this.form.errors.current_password) {
-                            this.form.reset('current_password')
-                            this.$refs.current_password.focus()
-                        }
+                        console.log('error');
                     }
                 })
             },
@@ -148,10 +178,18 @@
             },
             getTeachersList() {
                 axios
-                    .get(route('api.user.group.all'))
+                    .get(route('api.user.group.all', 'teacher'))
                     .then((res) => {
                         console.log(res.data);
                         this.teachersData = res.data;
+                    });
+            },
+            getTypesList() {
+                axios
+                    .get(route('api.type.all'))
+                    .then((res) => {
+                        console.log(res.data);
+                        this.typesData = res.data;
                     });
             },
         },

@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware('inertia')->group(function () {
     Route::prefix('api')->group(function () {
         Route::get('/schedule/{day}', [ScheduleController::class, 'get']);
+        Route::put('/schedule', [ScheduleController::class, 'add'])->name('api.schedule.add');
     });
 
     Route::get('/schedule', static function () {

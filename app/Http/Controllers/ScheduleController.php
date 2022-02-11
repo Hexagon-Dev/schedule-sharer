@@ -19,7 +19,7 @@ class ScheduleController extends Controller
         $schedules = Schedule::query()->where('day', $day)->where('group_id', $user->group_id)->get()->toArray();
 
         foreach ($schedules as $key => $value) {
-            $schedules[$key]['name'] = Lesson::query()->find($value['name'])->first()['name'];
+            $schedules[$key]['lesson'] = Lesson::query()->find($value['lesson_id'])->first()['name'];
             $schedules[$key]['type'] = Type::query()->find($value['type_id'])->first()['name'];
             $schedules[$key]['teacher'] = User::query()->find($value['teacher_id'])->first()['name'];
         }
@@ -30,6 +30,10 @@ class ScheduleController extends Controller
     public function add(CreateScheduleRequest $request): JsonResponse
     {
         $data = $request->validated();
+
+        if(!isset($data['group_id'])) {
+            $data['group_id'] = $request->user()->group_id;
+        }
 
         Schedule::query()->create($data);
 

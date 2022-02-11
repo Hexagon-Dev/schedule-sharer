@@ -17,11 +17,11 @@ class UserController extends Controller
     }
 
     /**
-     * @param int $id
+     * @param string $role
      * @return JsonResponse
      */
-    public function getGroup(int $id): JsonResponse
+    public function getRole(string $role): JsonResponse
     {
-        return response()->json(User::query()->where('group_id', $id)->get());
+        return response()->json(User::role($role)->get());
     }
 }

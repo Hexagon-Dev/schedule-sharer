@@ -20,13 +20,15 @@ class CreateScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lesson' => 'required',
-            'teacher' => 'required',
+            'lesson_id' => 'required',
+            'day' => 'required',
+            'teacher_id' => 'required',
             'classroom' => 'required',
             'building' => 'required',
-            'type' => 'required',
+            'type_id' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
+            'week_num' => 'required',
         ];
     }
 }

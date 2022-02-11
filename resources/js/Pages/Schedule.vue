@@ -42,7 +42,7 @@
                                         <transition-group name="fade-out-in">
                                         <tr v-for="schedule in data" :key="schedule['id']" v-if="!loadingData">
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                {{ schedule['name'] }}
+                                                {{ schedule['lesson'] }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 {{ schedule['teacher'] }}

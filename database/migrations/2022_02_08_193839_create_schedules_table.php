@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('schedules', static function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('lesson_id');
             $table->integer('day');
             $table->integer('teacher_id');
             $table->integer('group_id');
