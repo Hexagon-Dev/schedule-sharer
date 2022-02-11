@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
+    /**
+     * @param Request $request
+     * @param string $day
+     * @return JsonResponse
+     */
     public function get(Request $request, string $day): JsonResponse
     {
         $user = $request->user();
@@ -19,7 +24,8 @@ class ScheduleController extends Controller
         $schedules = Schedule::query()->where('day', $day)->where('group_id', $user->group_id)->get()->toArray();
 
         foreach ($schedules as $key => $value) {
-            $lesson = Lesson::query()->find($value['lesson_id'])->first();
+            $lesson = Lesson::query()->find($value['lesson_id'])->toArray();
+
             $schedules[$key]['lesson'] = $lesson['name'];
             $schedules[$key]['type'] = Type::query()->find($value['type_id'])->first()['name'];
             $schedules[$key]['teacher'] = User::query()->find($lesson['teacher_id'])->first()['name'];
@@ -28,6 +34,29 @@ class ScheduleController extends Controller
         return response()->json($schedules);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAll(Request $request): JsonResponse
+    {
+        $schedules = Schedule::query()->where('group_id', $request->user()->group_id)->get();
+
+        foreach ($schedules as $key => $value) {
+            $lesson = Lesson::query()->find($value['lesson_id'])->toArray();
+
+            $schedules[$key]['lesson'] = $lesson['name'];
+            $schedules[$key]['type'] = Type::query()->find($value['type_id'])->first()['name'];
+            $schedules[$key]['teacher'] = User::query()->find($lesson['teacher_id'])->first()['name'];
+        }
+
+        return response()->json($schedules);
+    }
+
+    /**
+     * @param CreateScheduleRequest $request
+     * @return JsonResponse
+     */
     public function add(CreateScheduleRequest $request): JsonResponse
     {
         $data = $request->validated();

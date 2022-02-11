@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\UserController;
@@ -24,3 +25,5 @@ Route::get('/lesson', [LessonController::class, 'getAll'])->name('api.lesson.all
 
 Route::get('/type', [TypeController::class, 'getAll'])->name('api.type.all');
 Route::put('/type', [TypeController::class, 'create'])->name('api.type.create');
+
+Route::get('/post', [PostController::class, 'getAll'])->name('api.post.all');

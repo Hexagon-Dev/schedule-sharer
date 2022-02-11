@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="Расписание">
+    <app-layout title="Типы пар">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Типы расписаний

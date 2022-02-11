@@ -20,7 +20,7 @@
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Новости
                                 </jet-nav-link>
                                 <jet-nav-link :href="route('schedule')" :active="route().current('schedule')">
                                     Расписание
@@ -97,7 +97,7 @@
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Новости
                         </jet-responsive-nav-link>
                         <jet-responsive-nav-link :href="route('schedule')" :active="route().current('schedule')">
                             Расписание
@@ -172,11 +172,12 @@
     import JetNavLink from '@/Jetstream/NavLink.vue'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue'
     import { Head, Link } from '@inertiajs/inertia-vue3';
+    import { computed } from 'vue'
+    import { usePage } from '@inertiajs/inertia-vue3'
 
     export default defineComponent({
         props: {
             title: String,
-            permissions: Object,
         },
 
         components: {
@@ -189,7 +190,10 @@
             JetResponsiveNavLink,
             Link,
         },
-
+        setup() {
+            const permissions = computed(() => usePage().props.value.permissions)
+            return { permissions }
+        },
         data() {
             return {
                 showingNavigationDropdown: false,

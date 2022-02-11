@@ -14,9 +14,9 @@
                             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                     <div class="flex justify-between bg-white items-center border-b border-gray-200">
-                                        <div class="">
-                                            <Link :href="route('schedule.add')" class="px-5 py-3 text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Добавить</Link>
-                                            <Link :href="route('schedule.delete')" class="px-5 py-3 text-base font-medium text-white bg-red-600 hover:bg-red-700">Удалить</Link>
+                                        <div v-if="hasPermission('schedule_create') && hasPermission('schedule_delete')">
+                                            <Link :href="route('schedule.add')" v-if="hasPermission('schedule_create')" class="px-5 py-3 text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">Добавить</Link>
+                                            <Link :href="route('schedule.delete')" v-if="hasPermission('schedule_delete')" class="px-5 py-3 text-base font-medium text-white bg-red-600 hover:bg-red-700">Удалить</Link>
                                         </div>
                                         <DayTab @click="changeDay(1)" :active="this.day === 1">Понедельник</DayTab>
                                         <DayTab @click="changeDay(2)" :active="this.day === 2">Вторник</DayTab>
@@ -34,13 +34,14 @@
                                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Аудитория</th>
                                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Корпус</th>
                                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Тип</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Начало</th>
-                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Конец</th>
+                                            <th scope="col" class="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Начало</th>
+                                            <th scope="col" class="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Конец</th>
                                         </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200" v-if="hasPermission('schedule_view')">
                                         <transition-group name="fade-out-in">
-                                        <tr v-for="schedule in data" :key="schedule['id']" v-if="!loadingData" v-bind:class="{'bg-indigo-100' : isNow[schedule['id']]}">
+                                        <tr v-for="schedule in data['schedules']" :key="schedule['id']" v-if="!loadingData" v-bind:class="{'bg-indigo-100' : isNow[schedule['id']]}">
+                                            <template v-if="schedule['day'] === this.day">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 {{ schedule['lesson'] }}
                                             </td>
@@ -56,16 +57,22 @@
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 {{ schedule['type'] }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="py-4 whitespace-nowrap">
                                                 {{ schedule['start_time'] }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="py-4 whitespace-nowrap">
                                                 {{ schedule['end_time'] }}
                                             </td>
+                                            </template>
                                         </tr>
                                         <tr v-if="loadingData">
                                             <td colspan="7">
                                                 <p class="text-center py-4">Загрузка...</p>
+                                            </td>
+                                        </tr>
+                                        <tr v-if="data.length === 0 && !loadingData">
+                                            <td colspan="7">
+                                                <p class="text-center py-4">Нету пар в выбранный день.</p>
                                             </td>
                                         </tr>
                                         </transition-group>
@@ -84,54 +91,73 @@
 <script>
 import { defineComponent } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
-import JetDayLink from '@/Jetstream/DayTab.vue'
+import DayTab from '@/Jetstream/DayTab.vue'
 import { Link } from '@inertiajs/inertia-vue3';
-import DayTab from "../Jetstream/DayTab";
 const axios = require('axios');
+const oneDay = 60 * 60 * 24 * 1000
 
 export default defineComponent({
     components: {
         DayTab,
         AppLayout,
-        JetDayLink,
         Link,
+    },
+    props: ['permissions'],
+    mounted() {
+        this.date = new Date();
+
+        this.day = this.date.getDay();
+
+        console.log(this.day);
+
+        if (localStorage.getItem('schedules')) {
+            this.getDataFromStorage();
+        } else {
+            this.getDataFromApi();
+        }
     },
     data() {
         return {
             data: {},
             loadingData: true,
-            day: "today",
+            day: 1,
             isNow: {},
+            date: "",
         }
-    },
-    created() {
-        let date = new Date();
-
-        this.day = date.getDay();
-        this.getSchedule();
     },
     methods: {
         changeDay(day) {
             this.day = day;
-            this.loadingData = true;
-            this.getSchedule(day);
         },
-        getSchedule(weekday = null) {
-            if (weekday === null) {
-                let date = new Date();
-                weekday = date.getDay();
-            }
+        getDataFromStorage() {
+            try {
+                this.data = JSON.parse(localStorage.getItem('schedules'));
 
+                console.log(this.data['schedules']);
+
+                const date1 = this.date;
+                const date2 = new Date(this.data['last_update']);
+                const diffTime = Math.abs(date2 - date1);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays >= 1) {
+                    this.getDataFromApi();
+                } else {
+                    this.loadingData = false;
+                }
+            } catch(e) {
+                localStorage.removeItem('schedules');
+            }
+        },
+        getDataFromApi() {
             axios
-                .get(route('api.schedule.get.day', weekday))
+                .get(route('api.schedule.all'))
                 .then((res) => {
                     //console.log(res.data);
-                    this.data = res.data;
+                    this.data['schedules'] = res.data;
                     this.loadingData = false;
 
-                    let today = new Date();
-                    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
+                    let time = this.date.getHours() + ":" + this.date.getMinutes() + ":" + this.date.getSeconds();
                     let active = {};
 
                     Object.keys(res.data).forEach(function(key) {
@@ -141,14 +167,20 @@ export default defineComponent({
 
                     });
                     this.isNow = active;
+
+                    this.saveSchedulesToStorage();
                 });
         },
         hasPermission(permission) {
-            console.log(this.$props);
-            let perms = this.props;
+            console.log('permissions', this.permissions);
 
-            return Object.keys(perms).some(o => perms[o]['name'] === permission);
+            return Object.keys(this.permissions).some(o => this.permissions[o]['name'] === permission);
         },
+        saveSchedulesToStorage() {
+            this.data['last_update'] = this.date;
+            const parsed = JSON.stringify(this.data);
+            localStorage.setItem('schedules', parsed);
+        }
     }
 })
 </script>

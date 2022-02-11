@@ -1,5 +1,5 @@
 <template>
-    <Head title="Forgot Password" />
+    <Head title="Забыли пароль" />
 
     <jet-authentication-card>
         <template #logo>
@@ -7,7 +7,7 @@
         </template>
 
         <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
+            Забыли Ваш пароль? Без проблем. Просто сообщите нам свой адрес электронной почты, и мы отправим вам ссылку для сброса пароля, которая позволит вам выбрать новый.
         </div>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -23,8 +23,12 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
+                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900 mr-auto">
+                    Вход в аккаунт
+                </Link>
+
                 <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
+                    Сброс пароля
                 </jet-button>
             </div>
         </form>
@@ -33,7 +37,7 @@
 
 <script>
     import { defineComponent } from 'vue'
-    import { Head } from '@inertiajs/inertia-vue3';
+    import {Head, Link} from '@inertiajs/inertia-vue3';
     import JetAuthenticationCard from '@/Jetstream/AuthenticationCard.vue'
     import JetAuthenticationCardLogo from '@/Jetstream/AuthenticationCardLogo.vue'
     import JetButton from '@/Jetstream/Button.vue'
@@ -49,7 +53,8 @@
             JetButton,
             JetInput,
             JetLabel,
-            JetValidationErrors
+            JetValidationErrors,
+            Link,
         },
 
         props: {

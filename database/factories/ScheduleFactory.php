@@ -17,7 +17,7 @@ class ScheduleFactory extends Factory
     public function definition(): array
     {
         return [
-            'lesson_id' => random_int(0, 10),
+            'lesson_id' => random_int(1, 10),
             'day' => random_int(1, 7),
             'group_id' => random_int(1, 10),
             'classroom' => 1,
