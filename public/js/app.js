@@ -22248,7 +22248,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_0__.defineComponent)({
   props: {
-    title: String
+    title: String,
+    permissions: Object
   },
   components: {
     Head: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_7__.Head,
@@ -23551,9 +23552,6 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     this.day = date.getDay();
     this.getSchedule();
   },
-  props: {
-    permissions: Object
-  },
   methods: {
     changeDay: function changeDay(day) {
       this.day = day;
@@ -23586,7 +23584,8 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
       });
     },
     hasPermission: function hasPermission(permission) {
-      var perms = this.permissions;
+      console.log(this.$props);
+      var perms = this.props;
       return Object.keys(perms).some(function (o) {
         return perms[o]['name'] === permission;
       });

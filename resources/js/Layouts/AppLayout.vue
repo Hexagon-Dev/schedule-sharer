@@ -176,6 +176,7 @@
     export default defineComponent({
         props: {
             title: String,
+            permissions: Object,
         },
 
         components: {
@@ -194,7 +195,6 @@
                 showingNavigationDropdown: false,
             }
         },
-
         methods: {
             switchToTeam(team) {
                 this.$inertia.put(route('current-team.update'), {

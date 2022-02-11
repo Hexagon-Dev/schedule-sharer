@@ -110,9 +110,6 @@ export default defineComponent({
         this.day = date.getDay();
         this.getSchedule();
     },
-    props: {
-        permissions: Object,
-    },
     methods: {
         changeDay(day) {
             this.day = day;
@@ -147,7 +144,8 @@ export default defineComponent({
                 });
         },
         hasPermission(permission) {
-            let perms = this.permissions;
+            console.log(this.$props);
+            let perms = this.props;
 
             return Object.keys(perms).some(o => perms[o]['name'] === permission);
         },
