@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->integer('group_id')->nullable()->default(null);
+            $table->integer('university_id')->nullable()->default(null);
             $table->timestamps();
         });
     }

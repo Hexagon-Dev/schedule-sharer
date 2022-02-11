@@ -51,9 +51,14 @@ class RolesSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        Role::create(['name' => 'headman']);
-        Role::create(['name' => 'teacher']);
-        Role::create(['name' => 'rector']);
+        $defaultRole = Role::create(['name' => 'default']);
+        Role::create(['name' => 'headman'])->save();
+        Role::create(['name' => 'teacher'])->save();
+        Role::create(['name' => 'unverified_teacher'])->save();
+        Role::create(['name' => 'rector'])->save();
+
+        $defaultRole->givePermissionTo('schedule_edit');
+        $defaultRole->givePermissionTo('schedule_view');
 
         $admin_role = Role::create(['name' => 'admin']);
         $admin->assignRole($admin_role);

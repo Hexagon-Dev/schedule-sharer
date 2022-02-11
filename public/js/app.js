@@ -23551,6 +23551,9 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     this.day = date.getDay();
     this.getSchedule();
   },
+  props: {
+    permissions: Object
+  },
   methods: {
     changeDay: function changeDay(day) {
       this.day = day;
@@ -23580,6 +23583,12 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
           }
         });
         _this.isNow = active;
+      });
+    },
+    hasPermission: function hasPermission(permission) {
+      var perms = this.permissions;
+      return Object.keys(perms).some(function (o) {
+        return perms[o]['name'] === permission;
       });
     }
   }
@@ -28611,6 +28620,7 @@ var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
 });
 
 var _hoisted_22 = {
+  key: 0,
   "class": "bg-white divide-y divide-gray-200"
 };
 var _hoisted_23 = {
@@ -28787,7 +28797,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
       }, 8
       /* PROPS */
-      , ["active"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup, {
+      , ["active"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_20, [_hoisted_21, _ctx.hasPermission('schedule_view') ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tbody", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup, {
         name: "fade-out-in"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -28823,7 +28833,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         _: 1
         /* STABLE */
 
-      })])])])])])])])])])];
+      })])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])])])])])];
     }),
     _: 1
     /* STABLE */

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTeacherRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Spatie\Permission\Traits\HasRoles;
 
 class UserController extends Controller
 {
@@ -23,5 +25,19 @@ class UserController extends Controller
     public function getRole(string $role): JsonResponse
     {
         return response()->json(User::role($role)->get());
+    }
+
+    public function createTeacher(CreateTeacherRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+
+        /** @var HasRoles $user */
+        $user = User::query()->create($data);
+
+        $user->assignRole('unverified_teacher');
+
+        return response()->json([
+            'message' => 'teacher_created'
+        ]);
     }
 }

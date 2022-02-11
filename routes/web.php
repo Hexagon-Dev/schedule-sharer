@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,8 +25,10 @@ Route::middleware('inertia')->group(function () {
         Route::put('/schedule', [ScheduleController::class, 'add'])->name('api.schedule.add');
     });
 
-    Route::get('/schedule', static function () {
-        return Inertia::render('Schedule');
+    Route::get('/schedule', static function (Request $request) {
+        $permissions = $request->user()->getAllPermissions();
+
+        return Inertia::render('Schedule', ['permissions' => $permissions]);
     })->name('schedule');
 
     Route::get('/schedule/add', static function () {
@@ -54,5 +57,5 @@ Route::middleware('inertia')->group(function () {
 
     Route::get('/user/{id}', static function ($id) {
         return Inertia::render('User', ['user_id' => $id]);
-    });
+    })->name('user');
 });

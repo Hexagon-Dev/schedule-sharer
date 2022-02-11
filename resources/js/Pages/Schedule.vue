@@ -38,7 +38,7 @@
                                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Конец</th>
                                         </tr>
                                         </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
+                                        <tbody class="bg-white divide-y divide-gray-200" v-if="hasPermission('schedule_view')">
                                         <transition-group name="fade-out-in">
                                         <tr v-for="schedule in data" :key="schedule['id']" v-if="!loadingData" v-bind:class="{'bg-indigo-100' : isNow[schedule['id']]}">
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -110,6 +110,9 @@ export default defineComponent({
         this.day = date.getDay();
         this.getSchedule();
     },
+    props: {
+        permissions: Object,
+    },
     methods: {
         changeDay(day) {
             this.day = day;
@@ -143,7 +146,11 @@ export default defineComponent({
                     this.isNow = active;
                 });
         },
+        hasPermission(permission) {
+            let perms = this.permissions;
 
+            return Object.keys(perms).some(o => perms[o]['name'] === permission);
+        },
     }
 })
 </script>
