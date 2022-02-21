@@ -37,13 +37,19 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $permissions = [];
+        $debug = false;
 
         if (!is_null($request->user())) {
             $permissions = $request->user()->getAllPermissions();
         }
 
+        if (config('app.env') !== "production") {
+            $debug = true;
+        }
+
         return array_merge(parent::share($request), [
             'permissions' => $permissions,
+            'debug' => $debug,
         ]);
     }
 }

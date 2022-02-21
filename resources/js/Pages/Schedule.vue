@@ -24,7 +24,7 @@
                                         <DayTab @click="changeDay(4)" :active="this.day === 4">Четверг</DayTab>
                                         <DayTab @click="changeDay(5)" :active="this.day === 5">Пятница</DayTab>
                                         <DayTab @click="changeDay(6)" :active="this.day === 6">Суббота</DayTab>
-                                        <DayTab @click="changeDay(7)" :active="this.day === 7">Воскресенье</DayTab>
+                                        <DayTab @click="changeDay(0)" :active="this.day === 0">Воскресенье</DayTab>
                                     </div>
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
@@ -93,8 +93,8 @@ import { defineComponent } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
 import DayTab from '@/Jetstream/DayTab.vue'
 import { Link } from '@inertiajs/inertia-vue3';
+
 const axios = require('axios');
-const oneDay = 60 * 60 * 24 * 1000
 
 export default defineComponent({
     components: {
@@ -102,13 +102,12 @@ export default defineComponent({
         AppLayout,
         Link,
     },
-    props: ['permissions'],
+    props: ['permissions', 'debug'],
     mounted() {
         this.date = new Date();
-
         this.day = this.date.getDay();
 
-        console.log(this.day);
+        if (this.debug) console.log('Day:', this.day);
 
         if (localStorage.getItem('schedules')) {
             this.getDataFromStorage();
@@ -133,7 +132,7 @@ export default defineComponent({
             try {
                 this.data = JSON.parse(localStorage.getItem('schedules'));
 
-                console.log(this.data['schedules']);
+                if (this.debug) console.log(this.data['schedules']);
 
                 const date1 = this.date;
                 const date2 = new Date(this.data['last_update']);
@@ -153,7 +152,7 @@ export default defineComponent({
             axios
                 .get(route('api.schedule.all'))
                 .then((res) => {
-                    //console.log(res.data);
+                    if (this.debug) console.log(res.data);
                     this.data['schedules'] = res.data;
                     this.loadingData = false;
 
@@ -172,7 +171,7 @@ export default defineComponent({
                 });
         },
         hasPermission(permission) {
-            console.log('permissions', this.permissions);
+            if (this.debug) console.log('permissions', this.permissions);
 
             return Object.keys(this.permissions).some(o => this.permissions[o]['name'] === permission);
         },

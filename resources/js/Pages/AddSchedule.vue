@@ -52,7 +52,7 @@
                                     <option value="4">Четверг</option>
                                     <option value="5">Пятница</option>
                                     <option value="6">Суббота</option>
-                                    <option value="7">Воскресенье</option>
+                                    <option value="0">Воскресенье</option>
                                 </select>
                             </div>
                             <div class="col-span-6 sm:col-span-4">

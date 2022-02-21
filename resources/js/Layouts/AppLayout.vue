@@ -191,8 +191,10 @@
             Link,
         },
         setup() {
-            const permissions = computed(() => usePage().props.value.permissions)
-            return { permissions }
+            const permissions = computed(() => usePage().props.value.permissions);
+            const debug = computed(() => usePage().props.value.debug);
+
+            return { permissions, debug }
         },
         data() {
             return {
@@ -207,7 +209,6 @@
                     preserveState: false
                 })
             },
-
             logout() {
                 this.$inertia.post(route('logout'));
             },
